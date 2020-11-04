@@ -7,7 +7,6 @@
 
 import Vapor
 import Fluent
-import CryptoTokenKit
 
 enum SessionSource: Int, Content {
   case signup
