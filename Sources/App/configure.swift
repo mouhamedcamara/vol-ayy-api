@@ -5,6 +5,11 @@ import FluentPostgresDriver
 import Vapor
 
 // configures your application
+
+extension Application {
+    static let databaseUrl = URL(string: "    postgres://uwbpgxavmthxuy:5fbf6d0993c02a226514172b1875ecd9822fa7b89562f33ce6f200f1830ac2aa@ec2-54-76-215-139.eu-west-1.compute.amazonaws.com:5432/d8es0n4g3380id")
+}
+
 public func configure(_ app: Application) throws {
     // uncomment to serve files from /Public folder
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
@@ -19,16 +24,24 @@ public func configure(_ app: Application) throws {
 //       maxConnectionsPerEventLoop: 1
 //   ), as: .mysql)
     
+//    app.databases.use(try .postgres(url: "    postgres://uwbpgxavmthxuy:5fbf6d0993c02a226514172b1875ecd9822fa7b89562f33ce6f200f1830ac2aa@ec2-54-76-215-139.eu-west-1.compute.amazonaws.com:5432/d8es0n4g3380id"), as: .psql)
     
+//    try app.databases.use(.postgres(url: Application.databaseUrl!), as: .psql)
     
-    if let databaseURL = Environment.get("DATABASE_URL"), var postgresConfig = PostgresConfiguration(url: databaseURL) {
-        postgresConfig.tlsConfiguration = .forClient(certificateVerification: .none)
-        app.databases.use(.postgres(
-            configuration: postgresConfig
-        ), as: .psql)
-    } else {
-        // ...
-    }
+    let databaseURL = "postgres://uwbpgxavmthxuy:5fbf6d0993c02a226514172b1875ecd9822fa7b89562f33ce6f200f1830ac2aa@ec2-54-76-215-139.eu-west-1.compute.amazonaws.com:5432/d8es0n4g3380id"
+    
+    var postgresConfig = PostgresConfiguration(url: databaseURL)
+    postgresConfig?.tlsConfiguration = .forClient(certificateVerification: .none)
+    app.databases.use(.postgres(
+        configuration: postgresConfig!
+    ), as: .psql)
+    
+//    {
+//
+//    }
+//    else
+//    {
+//    }
     
     
 
