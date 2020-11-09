@@ -14,6 +14,7 @@ struct CreateBoxes: Migration {
         .field("user_id", .uuid)
         .foreignKey("user_id", references: "users", "id", onDelete: .cascade, onUpdate: .cascade)
         .field("name", .string, .required)
+        .unique(on: "name")
         .field("number", .int, .required)
         .field("expense", .int, .required)
         .field("death", .int, .required)
