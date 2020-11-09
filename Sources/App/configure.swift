@@ -38,11 +38,11 @@ public func configure(_ app: Application) throws {
     
     //Initiate
         
-//        let rassoul = User(name: "Mouhamed Camara", phone: "77 577 93 93", email: "mhrassoul.camara@gmail.com", password: "muqtafina@9")
-//        let ba = User(name: "Alioune Khaly Ba", phone: "77 288 28 59", email: "baaliounekhaly@gmail.com", password: "testeur")
-//        let testeur = User(name: "Amina", phone: "771000000", email: "amina@gmail.com", password: "testeur")
+        let rassoul = User(name: "Mouhamed Camara", phone: "77 577 93 93", email: "mhrassoul.camara@gmail.com", password: "muqtafina@9")
+        let ba = User(name: "Alioune Khaly Ba", phone: "77 288 28 59", email: "baaliounekhaly@gmail.com", password: "testeur")
+        let testeur = User(name: "Amina", phone: "771000000", email: "amina@gmail.com", password: "testeur")
 
-//        try testeur.create(on: app.db).wait()
+        try [rassoul, ba, testeur].create(on: app.db).wait()
     
     app.migrations.add(CreateUser())
     app.migrations.add(CreateTokens())
