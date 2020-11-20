@@ -11,7 +11,7 @@ import Vapor
 
 extension FieldKey
 {
-    static var number: Self { "amount" }
+    static var number: Self { "number" }
 }
 
 final class Death: Model, Content {
