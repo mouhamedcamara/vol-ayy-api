@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Mouhamed Camara on 11/4/20.
 //
@@ -11,13 +11,12 @@ import Vapor
 
 extension FieldKey
 {
-    static var description: Self { "description" }
-    static var amount: Self { "amount" }
+    static var number: Self { "amount" }
 }
 
-final class Expense: Model, Content {
+final class Death: Model, Content {
 
-    static let schema = "expenses"
+    static let schema = "death"
 
     @ID()
     var id: UUID?
@@ -25,24 +24,21 @@ final class Expense: Model, Content {
     @Parent(key: "box_id")
     var box: Box
     
-    @Field(key: .amount)
-    var amount: Int
-    
-    @Field(key: .description)
-    var description: String
+    @Field(key: .number)
+    var number: Int
     
     @Timestamp(key: "created_at", on: .create)
     var createdAt: Date?
 
     init() { }
 
-    init(id: UUID? = nil, amount: Int, description: String, boxId: UUID, created_at: Date = Date())
+    init(id: UUID? = nil, number: Int, boxId: UUID, created_at: Date = Date())
     {
         self.id = id
-        self.amount = amount
-        self.description = description
+        self.number = number
         self.$box.id = boxId
         self.createdAt = created_at
     }
 }
+
 
