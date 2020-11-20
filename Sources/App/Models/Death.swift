@@ -15,9 +15,9 @@ extension FieldKey
     static var amount: Self { "amount" }
 }
 
-final class Death: Model, Content {
+final class Expense: Model, Content {
 
-    static let schema = "death"
+    static let schema = "expenses"
 
     @ID()
     var id: UUID?
@@ -25,18 +25,22 @@ final class Death: Model, Content {
     @Parent(key: "box_id")
     var box: Box
     
-    @Field(key: .number)
-    var number: Int
+    @Field(key: .amount)
+    var amount: Int
+    
+    @Field(key: .description)
+    var description: String
     
     @Timestamp(key: "created_at", on: .create)
     var createdAt: Date?
 
     init() { }
 
-    init(id: UUID? = nil, number: Int, boxId: UUID, created_at: Date = Date())
+    init(id: UUID? = nil, amount: Int, description: String, boxId: UUID, created_at: Date = Date())
     {
         self.id = id
-        self.number = number
+        self.amount = amount
+        self.description = description
         self.$box.id = boxId
         self.createdAt = created_at
     }

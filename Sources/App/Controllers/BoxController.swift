@@ -15,6 +15,7 @@ struct BoxController: RouteCollection
         let boxes = routes.grouped("api").grouped("box")
         boxes.get(use: index)
         boxes.get("sales", ":boxID", use: sales)
+        boxes.get("expenses", ":boxID", use: expenses)
         boxes.post("create", use: create)
         boxes.group(":boxID") { box in
             box.delete("delete", use: delete)
@@ -31,6 +32,7 @@ struct BoxController: RouteCollection
     func create(req: Request) throws -> EventLoopFuture<Box>
     {
         let box = try req.content.decode(Box.self)
+        
         return box.save(on: req.db).map { box }
     }
     
@@ -78,6 +80,23 @@ struct BoxController: RouteCollection
     {
         return  Sale.query(on: req.db)
                     .join(Box.self, on: \Sale.$box.$id == \Box.$id, method: .inner)
+                    .filter(Box.self, \.$id == UUID(uuidString: req.parameters.get("boxID")!)!)
+                    .all()
+    }
+    
+    func expenses(req: Request) throws -> EventLoopFuture<[Expense]>
+    {
+        return  Expense.query(on: req.db)
+                    .join(Box.self, on: \Expense.$box.$id == \Box.$id, method: .inner)
+                    .filter(Box.self, \.$id == UUID(uuidString: req.parameters.get("boxID")!)!)
+                    .all()
+    }
+    
+    
+    func deaths(req: Request) throws -> EventLoopFuture<[Death]>
+    {
+        return  Death.query(on: req.db)
+                    .join(Box.self, on: \Death.$box.$id == \Box.$id, method: .inner)
                     .filter(Box.self, \.$id == UUID(uuidString: req.parameters.get("boxID")!)!)
                     .all()
     }
