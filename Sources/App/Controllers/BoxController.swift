@@ -16,6 +16,7 @@ struct BoxController: RouteCollection
         boxes.get(use: index)
         boxes.get("sales", ":boxID", use: sales)
         boxes.get("expenses", ":boxID", use: expenses)
+        boxes.get("deaths", ":boxID", use: deaths)
         boxes.post("create", use: create)
         boxes.group(":boxID") { box in
             box.delete("delete", use: delete)

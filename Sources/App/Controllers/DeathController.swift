@@ -13,65 +13,20 @@ struct DeathController: RouteCollection
 {
     func boot(routes: RoutesBuilder) throws
     {
-        let expenses = routes.grouped("api").grouped("death")
-        expenses.get(use: index)
-        expenses.post("create", use: create)
-        expenses.group(":deathID") { expense in
-            expense.delete("delete", use: delete)
-            expense.put("update", use: update)
-            expense.get("read", use: read)
-        }
-    }
-
-    func index(req: Request) throws -> EventLoopFuture<[Expense]>
-    {
-        return Expense.query(on: req.db).all()
-    }
-
-    func create(req: Request) throws -> EventLoopFuture<Expense>
-    {
-        let expense = try req.content.decode(Expense.self)
-        return expense.save(on: req.db).map { expense }
-    }
-    
-    func read(req: Request) throws -> EventLoopFuture<Expense>
-    {
-        return Expense.find(req.parameters.get("expenseID"), on: req.db)
-                .unwrap(or: Abort(.notFound))
-    }
-    
-    struct PatchExpenseRequestBody: Content
-    {
-        let amount: Int?
-        let description: String?
-    }
-
-    func update(req: Request) throws -> EventLoopFuture<Expense>
-    {
-        let patchExpenseRequestBody = try req.content.decode(PatchExpenseRequestBody.self)
+        let deaths = routes.grouped("api").grouped("death")
+        deaths.get(use: index)
+        deaths.post("create", use: create)
         
-        return Expense.find(req.parameters.get("expenseID"), on: req.db)
-                .unwrap(or: Abort(.notFound))
-                .flatMap { expense in
-                    if let description = patchExpenseRequestBody.description
-                    {
-                        expense.$description.value = description
-                    }
-                    if let amount = patchExpenseRequestBody.amount
-                    {
-                        expense.amount = amount
-//                        expense.$task.id = task_id
-                    }
-                    return expense.update(on: req.db)
-                        .transform(to: expense)
-            }
     }
 
-    func delete(req: Request) throws -> EventLoopFuture<HTTPStatus>
+    func index(req: Request) throws -> EventLoopFuture<[Death]>
     {
-        return Expense.find(req.parameters.get("expenseID"), on: req.db)
-            .unwrap(or: Abort(.notFound))
-            .flatMap { $0.delete(on: req.db) }
-            .transform(to: .ok)
+        return Death.query(on: req.db).all()
+    }
+
+    func create(req: Request) throws -> EventLoopFuture<Death>
+    {
+        let death = try req.content.decode(Death.self)
+        return death.save(on: req.db).map { death }
     }
 }
