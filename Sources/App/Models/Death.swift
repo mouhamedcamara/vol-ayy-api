@@ -40,5 +40,3 @@ final class Death: Model, Content {
         self.createdAt = created_at
     }
 }
-
-

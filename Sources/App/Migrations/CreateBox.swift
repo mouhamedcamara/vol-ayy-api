@@ -23,6 +23,7 @@ struct CreateBoxes: Migration {
         .field("revenu", .int, .required)
         .field("created_at", .datetime, .required)
         .create()
+    
   }
 
   func revert(on database: Database) -> EventLoopFuture<Void> {
