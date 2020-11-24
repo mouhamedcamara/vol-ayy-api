@@ -43,7 +43,7 @@ public func configure(_ app: Application) throws {
     app.migrations.add(CreateSales())
     app.migrations.add(CreateExpense())
     app.migrations.add(CreateDeath())
-    
+    app.migrations.add(CreateAccount())
     
     try app.autoMigrate().wait()
     

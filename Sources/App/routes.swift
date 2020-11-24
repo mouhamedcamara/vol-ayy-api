@@ -11,5 +11,5 @@ func routes(_ app: Application) throws {
     try app.register(collection: SaleController())
     try app.register(collection: ExpenseController())
     try app.register(collection: DeathController())
-    
+    try app.register(collection: AccountController())
 }
