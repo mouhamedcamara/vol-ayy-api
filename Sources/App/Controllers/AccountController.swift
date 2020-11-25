@@ -16,7 +16,7 @@ struct AccountController: RouteCollection
         let amount = routes.grouped("api").grouped("amount")
         amount.get(use: index)
         amount.post("create", use: create)
-        amount.group(":accountID") { box in
+        amount.group(":accountID") { amount in
             amount.put("update_to_add", use: update_to_add)
             amount.put("update_to_substract", use: update_to_substract)
         }
