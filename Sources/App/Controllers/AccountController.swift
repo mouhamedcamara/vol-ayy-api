@@ -17,7 +17,8 @@ struct AccountController: RouteCollection
         amount.get(use: index)
         amount.post("create", use: create)
         amount.group(":accountID") { box in
-            amount.put("update", use: update)
+            amount.put("update_to_add", use: update_to_add)
+            amount.put("update_to_substract", use: update_to_substract)
         }
     }
 
@@ -37,7 +38,7 @@ struct AccountController: RouteCollection
         let amount: Int?
     }
 
-    func update(req: Request) throws -> EventLoopFuture<Account>
+    func update_to_add(req: Request) throws -> EventLoopFuture<Account>
     {
         let patchAccountRequestBody = try req.content.decode(PatchAccountRequestBody.self)
         
@@ -46,7 +47,23 @@ struct AccountController: RouteCollection
                 .flatMap { account in
                     if let amount = patchAccountRequestBody.amount
                     {
-                        account.amount = amount
+                        account.amount = account.amount + amount
+                    }
+                    return account.update(on: req.db)
+                        .transform(to: account)
+            }
+    }
+    
+    func update_to_substract(req: Request) throws -> EventLoopFuture<Account>
+    {
+        let patchAccountRequestBody = try req.content.decode(PatchAccountRequestBody.self)
+        
+        return Account.find(req.parameters.get("accountID"), on: req.db)
+                .unwrap(or: Abort(.notFound))
+                .flatMap { account in
+                    if let amount = patchAccountRequestBody.amount
+                    {
+                        account.amount = account.amount - amount
                     }
                     return account.update(on: req.db)
                         .transform(to: account)
