@@ -30,6 +30,9 @@ final class Sale: Model, Content {
     @Parent(key: "box_id")
     var box: Box
     
+    @Parent(key: "user_id")
+    var user: User
+    
     @Field(key: FieldKeys.client_name)
     var client_name: String
     
@@ -58,6 +61,7 @@ final class Sale: Model, Content {
     
     init(id: UUID? = nil,
          boxId: Box.IDValue,
+         user_id: User.IDValue,
         client_name: String,
         client_number: Int,
         quantity: Int,
@@ -68,6 +72,7 @@ final class Sale: Model, Content {
         created_at: Date = Date())
     {
         self.id = id
+        self.$user.id = user_id
         self.$box.id = boxId
         self.client_name =  client_name
         self.client_number =  client_number

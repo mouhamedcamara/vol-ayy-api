@@ -12,6 +12,8 @@ struct CreateSales: Migration {
   func prepare(on database: Database) -> EventLoopFuture<Void> {
     database.schema(Sale.schema)
         .id()
+        .field("user_id", .uuid)
+        .foreignKey("user_id", references: "users", "id", onDelete: .cascade, onUpdate: .cascade)
         .field("box_id", .uuid)
         .foreignKey("box_id", references: "boxes", "id", onDelete: .cascade, onUpdate: .cascade)
         .field("client_name", .string, .required)
